@@ -187,6 +187,7 @@ return [
 
     // API
     'api' => [
-        'poliklinik' => 'http://127.0.0.2:8001/api/poliklinik'
+        'poliklinik' => 'http://127.0.0.1:8001/api/poliklinik',
+        'administrasi' => 'http://127.0.0.1:8002/api/administrasi'
     ]
 ];

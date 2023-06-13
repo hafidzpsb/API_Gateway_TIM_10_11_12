@@ -14,17 +14,15 @@ class APIGatewayController extends Controller
         $body = $response -> getBody() -> getContents();
         $data = json_decode($body, true);
         $client2 = new Client();
-        $response2 = $client2 -> request('GET', config('app.api.api2') . '/endpointapi2');
+        $response2 = $client2 -> request('GET', config('app.api.administrasi') . '/PermintaanObat');
         $body2 = $response2 -> getBody() -> getContents();
         $data2 = json_decode($body2, true);
-        $client3 = new Client();
-        $response3 = $client3 -> request('GET', config('app.api.api3') . '/endpointapi3');
-        $body3 = $response3 -> getBody() -> getContents();
-        $data3 = json_decode($body3, true);
+
         return response()->json([
             'status' => 200,
             'message' => 'berhasil',
-            'data_poliklinik' => $data
+            'data_poliklinik' => $data,
+            'data_administrasi' => $data2,
         ]);
     }
     public function show($id_konsul)
