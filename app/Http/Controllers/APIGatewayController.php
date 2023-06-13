@@ -8,7 +8,7 @@ use Carbon\Carbon;
 
 class APIGatewayController extends Controller
 {
-    public function index()
+    public function index() // Ambil data tabel pasien (poliklinik), tabel permintaan obat (administrasi), dan tabel inventori obat (apoteker).
     {
         $client = new Client();
         $response = $client -> request('GET', config('app.api.poliklinik') . '/pasien');
@@ -30,7 +30,7 @@ class APIGatewayController extends Controller
             'data_obat_apoteker' => $data3,
         ]);
     }
-    public function isi_data_pasien_administrasi(Request $request) // isi data pasien di database administrasi
+    public function isi_data_pasien_administrasi(Request $request) // Isi data untuk tabel pasien di database administrasi.
     {
         $values = [
             'nama_pasien' => $request->nama_pasien,
@@ -51,14 +51,14 @@ class APIGatewayController extends Controller
             return $e->getResponse()->getBody()->getContents();
         }
     }
-    public function isi_data_pasien_poliklinik(Request $request) // isi data pasien di database poliklinik
+    public function isi_data_pasien_poliklinik(Request $request) // Isi data untuk tabel pasien di database poliklinik dari tabel pasien di database administrasi.
     {
         $client = new Client();
         $response = $client -> request('GET', config('app.api.administrasi') . '/pasien');
         $body = $response -> getBody() -> getContents();
         $data = json_decode($body, true);
-        $isi = $data['data']; // ambil isi database pasien administrasi
-        $data_terbaru = count($data['data']) - 1; // ambil data terbaru pasien administrasi
+        $isi = $data['data']; // Ambil data tabel pasien administrasi.
+        $data_terbaru = count($data['data']) - 1; // Ambil data terbaru tabel pasien administrasi.
         $values = [
             'nama_pasien' => $isi[$data_terbaru]['nama_pasien'],
             'jenis_kelamin' => $isi[$data_terbaru]['jenis_kelamin'],
@@ -79,7 +79,7 @@ class APIGatewayController extends Controller
             return $e->getResponse()->getBody()->getContents();
         }
     }
-    public function isi_data_keterangan_pasien_poliklinik(Request $request, $id_pasien) // isi data tabel-tabel di poliklinik
+    public function isi_data_keterangan_pasien_poliklinik(Request $request, $id_pasien) // Isi data tabel-tabel di poliklinik.
     {
         $values = [
             'id_pasien' => $id_pasien,
@@ -91,7 +91,7 @@ class APIGatewayController extends Controller
             'suhu' => $request->suhu,
             'keluhan' => $request->keluhan
         ];
-        try{
+        try{ // Isi tabel rekam medis poliklinik.
             $client = new Client();
             $response = $client -> request('POST', config('app.api.poliklinik') . '/rm', [
                 'form_params' => $values
@@ -110,7 +110,7 @@ class APIGatewayController extends Controller
             'hasil_diagnosis' => $request->hasil_diagnosis,
             'tindakan_medis' => $request->tindakan_medis
         ];
-        try{
+        try{ // Isi tabel konsultasi poliklinik.
             $client = new Client();
             $response = $client -> request('POST', config('app.api.poliklinik') . '/konsul', [
                 'form_params' => $values2
@@ -130,7 +130,7 @@ class APIGatewayController extends Controller
             'resep_obat' => $request->resep_obat,
             'jumlah_pembayaran' => $request->jumlah_pembayaran,
         ];
-        try{
+        try{ // Isi tabel resep poliklinik.
             $client = new Client();
             $response = $client -> request('POST', config('app.api.poliklinik') . '/resep', [
                 'form_params' => $values3
@@ -146,7 +146,7 @@ class APIGatewayController extends Controller
             return $e->getResponse()->getBody()->getContents();
         }
     }
-    public function isi_data_resep_apoteker(Request $request)
+    public function isi_data_resep_apoteker(Request $request) // Isi data untuk tabel resep di database apotek dari tabel resep di database poliklinik.
     {
         $client = new Client();
         $response = $client -> request('GET', config('app.api.poliklinik') . '/resep');
