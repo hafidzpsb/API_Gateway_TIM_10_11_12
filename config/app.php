@@ -185,4 +185,8 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    // API
+    'api' => [
+        'poliklinik' => 'http://127.0.0.2:8001/api/poliklinik'
+    ]
 ];
